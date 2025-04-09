@@ -1,0 +1,64 @@
+{
+  "name": "vue-anime",
+  "version": "0.1.0",
+  "description": "A Vue3/Nuxt animation library inspired by Anime.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./nuxt": {
+      "import": "./dist/nuxt/index.mjs",
+      "require": "./dist/nuxt/index.js",
+      "types": "./dist/nuxt/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsup",
+    "playground:vue": "vite playground/vue",
+    "playground:nuxt": "nuxt dev playground/nuxt",
+    "test": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@nuxt/kit": "^3.10.3",
+    "@types/node": "^20.11.25",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.22.0",
+    "nuxt": "^3.10.3",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "typescript": "~5.7.2",
+    "vite": "^5.1.5",
+    "vitest": "^1.3.1"
+  },
+  "dependencies": {
+    "vue": "^3.4.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "keywords": [
+    "vue",
+    "animation",
+    "nuxt",
+    "motion",
+    "transition"
+  ],
+  "author": "",
+  "license": "MIT"
+}
