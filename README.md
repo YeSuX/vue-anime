@@ -2,6 +2,18 @@
 
 A Vue3/Nuxt animation library inspired by Anime.js.
 
+## 🚀 Project Status
+
+The project is currently in initial setup phase. We're working on establishing the foundation before implementing core features.
+
+### Current Progress
+- ✅ Project structure and configuration
+- ✅ Development environment setup
+- ✅ Core architecture design
+- ⏳ Core animation engine (not started)
+- ⏳ Vue integration layer (not started)
+- ⏳ Documentation (not started)
+
 ## Features
 
 - 🚀 **High Performance** - Optimized for smooth animations
@@ -83,9 +95,13 @@ pnpm build
 pnpm test
 ```
 
+## Contributing
+
+We welcome contributions! Please check out our [Contributing Guide](CONTRIBUTING.md) for details on how to get started.
+
 ## Documentation
 
-Detailed documentation is coming soon!
+Detailed documentation is being developed. You can find the latest updates in the `docs` directory.
 
 ## License
 
