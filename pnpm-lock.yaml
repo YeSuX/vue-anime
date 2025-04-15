@@ -57,6 +57,9 @@ importers:
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.3)
+      vue-anime:
+        specifier: workspace:*
+        version: link:../../packages/anime
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.2.1
