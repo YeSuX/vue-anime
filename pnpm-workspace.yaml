@@ -1,4 +1,6 @@
 packages:
-  - 'packages/*'
-  - 'playground/*'
-  - 'docs'
+  - packages/*
+  - playground/*
+  - docs
+onlyBuiltDependencies:
+  - esbuild

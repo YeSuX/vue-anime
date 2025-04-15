@@ -1,15 +1,19 @@
 {
   "name": "vue-anime-monorepo",
   "private": true,
+  "packageManager": "pnpm@10.6.1",
   "description": "Vue Anime Monorepo",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
   "author": "Suxiong(https://github.com/YeSuX)",
   "license": "MIT",
-  "packageManager": "pnpm@10.6.1",
+  "keywords": [],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix --ext .ts,.tsx,.vue .",
+    "type-check": "tsc --noEmit"
+  },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.12.0",
+    "eslint": "^9.24.0",
     "typescript": "^5.8.3"
   }
 }
