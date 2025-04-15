@@ -2,7 +2,16 @@
   "name": "vue-anime",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "description": "A Vue 3 component library for anime.js",
+  "author": "Suxiong(https://github.com/YeSuX)",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "anime",
+    "anime.js",
+    "animation",
+    "vue-anime"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

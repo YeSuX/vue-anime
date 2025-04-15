@@ -20,5 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["./packages/*", "./playground/*", "./docs"],
+  "exclude": ["./node_modules", "./dist"]
 }
