@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { anime } from 'vue-anime'
 
-console.log(anime);
-
-
+console.log(anime)
 </script>
 
 <template>
