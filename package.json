@@ -7,16 +7,19 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix --ext .ts,.tsx,.vue .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "version": "changeset version",
+    "release": "changeset publish"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.12.0",
+    "@changesets/cli": "^2.29.0",
     "eslint": "^9.24.0",
+    "tsup": "^8.4.0",
     "typescript": "^5.8.3",
     "vue": "^3.5.13"
   }
