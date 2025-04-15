@@ -1,0 +1,12 @@
+{
+  "name": "vue-anime-monorepo",
+  "private": true,
+  "description": "Vue Anime Monorepo",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Suxiong(https://github.com/YeSuX)",
+  "license": "MIT",
+  "packageManager": "pnpm@10.6.1"
+}
