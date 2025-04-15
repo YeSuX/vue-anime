@@ -1,5 +1,5 @@
 import { computed, reactive, toRefs } from 'vue'
-import { K, maxFps, minValue } from '../consts'
+import { K, maxFps, minValue, tickModes } from '../consts'
 import { round } from '../utils'
 
 export function useClock(initTime = 0) {
@@ -43,8 +43,35 @@ export function useClock(initTime = 0) {
     },
   })
 
+  const speed = computed({
+    get: () => state._speed,
+    set: (playbackRate) => {
+      const pbr = +playbackRate
+      state._speed = pbr < minValue ? minValue : pbr
+    },
+  })
+
+  const requestTick = (time) => {
+    const scheduledTime = state._scheduleTime
+    const elapsedTime = state._elapsedTime
+    state._elapsedTime += (time - elapsedTime)
+
+    if (elapsedTime < scheduledTime) {
+      return tickModes.NONE
+    }
+
+    const frameDuration = state._frameDuration
+    const frameDelta = elapsedTime - scheduledTime
+    state._scheduleTime += frameDelta < frameDuration ? frameDuration : frameDelta
+    return tickModes.AUTO
+  }
+
   return {
     ...toRefs(state),
     fps,
+    speed,
+
+    // functions
+    requestTick,
   }
 }
