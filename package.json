@@ -10,7 +10,10 @@
     "lint": "eslint --fix --ext .ts,.tsx,.vue .",
     "type-check": "tsc --noEmit",
     "version": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:preview": "pnpm --filter docs preview"
   },
   "peerDependencies": {
     "vue": "^3.5.13"
