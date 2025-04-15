@@ -11,9 +11,13 @@
     "lint": "eslint --fix --ext .ts,.tsx,.vue .",
     "type-check": "tsc --noEmit"
   },
+  "peerDependencies": {
+    "vue": "^3.5.13"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^4.12.0",
     "eslint": "^9.24.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vue": "^3.5.13"
   }
 }
