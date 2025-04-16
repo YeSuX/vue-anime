@@ -57,16 +57,15 @@ export function useClock(initTime = 0) {
   // 时间同步：调整内部时钟，使动画速度与实际时间同步
   const requestTick = (time: number) => {
     const scheduledTime = state._scheduleTime// 预计的下一帧时间
-    const elapsedTime = state._elapsedTime// 已经过去的时间
-    state._elapsedTime += (time - elapsedTime)// 更新经过的时间
+    state._elapsedTime = time // 更新经过的时间
 
     // 如果实际时间还没到预定时间，跳过这一帧
-    if (elapsedTime < scheduledTime) {
+    if (state._elapsedTime < scheduledTime) {
       return tickModes.NONE
     }
 
     const frameDuration = state._frameDuration // 每帧应持续的时间
-    const frameDelta = elapsedTime - scheduledTime// 实际过去的时间与预计时间的差值
+    const frameDelta = state._elapsedTime - scheduledTime// 实际过去的时间与预计时间的差值
     // 更新下一帧的预定时间
     // 确保至少前进一个帧的时长，如果实际过去的时间更多则跳得更远
     state._scheduleTime += frameDelta < frameDuration ? frameDuration : frameDelta
@@ -82,7 +81,9 @@ export function useClock(initTime = 0) {
   }
 
   return {
+    // state
     ...toRefs(state),
+    // computed
     fps,
     speed,
 
