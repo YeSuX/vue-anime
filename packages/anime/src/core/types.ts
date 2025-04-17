@@ -59,4 +59,35 @@ export type Timer = Simplify<{
     then(callback?: (timer: Timer) => void): Promise<any>
 }>
 
+export type DefaultsParams = Simplify<{
+    id?: number | string | null;
+    keyframes?: any;
+    playbackEase?: any;
+    playbackRate?: number;
+    frameRate?: number;
+    loop?: number | boolean;
+    reversed?: boolean;
+    alternate?: boolean;
+    autoplay?: boolean | ScrollObserver;
+    duration?: number | any;
+    delay?: number | any;
+    loopDelay?: number;
+    ease?: any;
+    composition?: 'none' | 'replace' | 'blend' | number;
+    modifier?: (v: any) => any;
+    onBegin?: Callback<any>;
+    onBeforeUpdate?: Callback<any>;
+    onUpdate?: Callback<any>;
+    onLoop?: Callback<any>;
+    onPause?: Callback<any>;
+    onComplete?: Callback<any>;
+    onRender?: Callback<any>;
+}>;
+
+export type Timeline = Simplify<{
+    labels: Record<string, number>;
+    defaults: DefaultsParams;
+    onRender: Callback<Timeline>;
+}>
+
 export type TimerParams = Simplify<Merge<TimerOptions, TickableCallbacks<Timer>>>
