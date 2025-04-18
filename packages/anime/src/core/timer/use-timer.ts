@@ -85,7 +85,7 @@ export const useTimer = (
         },
         iterationDuration: 0,
         iterationCount: 0,
-        _autoplay: undefined,
+        _autoplay: parent ? false : setValue(autoplay, timerDefaults.autoplay),
         _offset: 0,
         _delay: 0,
         _loopDelay: 0,
@@ -125,6 +125,12 @@ export const useTimer = (
             // TODO: 子元素渲染处理
             // 重置计时器
             this.reset(internalRender)
+            // 自动播放处理
+            const autoplay = this._autoplay
+            if (autoplay === true) {
+                this.resume()
+            }
+            // TODO: autoplay 是scrollObserver时处理
             console.log('this', this);
             return this;
         },
@@ -135,7 +141,15 @@ export const useTimer = (
             throw new Error("Function not implemented.")
         },
         resume: function (): Timer {
-            throw new Error("Function not implemented.")
+            // 检查暂停状态
+            if (!this.paused) {
+                return this
+            }
+            // TODO: 暂停状态处理
+            // 更新计时器状态
+            // 处理零持续时间的特殊情况
+            // 处理正常计时器
+            return this
         },
         restart: function (): Timer {
             throw new Error("Function not implemented.")
