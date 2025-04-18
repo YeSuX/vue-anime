@@ -3,7 +3,7 @@ import { DefaultsParams } from "./types"
 import { compositionTypes, noop } from "./utils"
 
 export const defaults: DefaultsParams = {
-    id: null,
+    id: undefined,
     keyframes: null,
     playbackEase: null,
     playbackRate: 1,

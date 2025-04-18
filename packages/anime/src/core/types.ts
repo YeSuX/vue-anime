@@ -1,9 +1,127 @@
-import { Simplify, Merge, Exact, SetOptional } from "type-fest"
+import { Simplify, Merge, Exact, SetOptional, ValueOf } from "type-fest"
 import { Clock } from "./clock/type"
+import { compositionTypes } from "./consts"
 
 export type Timeline = any
 export type ScrollObserver = any
 export type Renderable = any
+export type PercentageKeyframes = any
+export type DurationKeyframes = any
+export type EasingParam = any
+export type FunctionValue = any
+export type Tickable = any
+
+export type DefaultsParams = Simplify<{
+    /**
+     * 动画实例的标识符
+     */
+    id?: number | string;
+
+    /**
+     * 关键帧配置，可以是基于百分比或持续时间的关键帧
+     */
+    keyframes?: PercentageKeyframes | DurationKeyframes;
+
+    /**
+     * 播放缓动函数，控制整体动画的播放速率变化
+     */
+    playbackEase?: EasingParam;
+
+    /**
+     * 播放速率，值越大动画播放越快
+     */
+    playbackRate?: number;
+
+    /**
+     * 帧率设置，控制动画刷新频率
+     */
+    frameRate?: number;
+
+    /**
+     * 循环次数，true表示无限循环
+     */
+    loop?: number | boolean;
+
+    /**
+     * 是否反向播放动画
+     */
+    reversed?: boolean;
+
+    /**
+     * 是否在每次循环时交替正反方向
+     */
+    alternate?: boolean;
+
+    /**
+     * 是否自动播放，也可以绑定到滚动观察器
+     */
+    autoplay?: boolean | ScrollObserver;
+
+    /**
+     * 动画持续时间（毫秒），也可以是一个函数返回不同目标的时间
+     */
+    duration?: number | FunctionValue;
+
+    /**
+     * 动画延迟时间（毫秒），也可以是一个函数
+     */
+    delay?: number | FunctionValue;
+
+    /**
+     * 循环之间的延迟时间（毫秒）
+     */
+    loopDelay?: number;
+
+    /**
+     * 缓动函数，控制动画中各个属性的变化速率
+     */
+    ease?: EasingParam;
+
+    /**
+     * 动画合成模式，决定多个动画作用于同一属性时如何处理
+     */
+    composition?: 'none' | 'replace' | 'blend' | ValueOf<typeof compositionTypes>;
+
+    /**
+     * 值修饰器函数，可对动画值进行进一步处理
+     */
+    modifier?: (v: any) => any;
+
+    /**
+     * 动画开始时的回调函数
+     */
+    onBegin?: (tickable: Tickable) => void;
+
+    /**
+     * 每次更新前的回调函数
+     */
+    onBeforeUpdate?: (tickable: Tickable) => void;
+
+    /**
+     * 每次更新时的回调函数
+     */
+    onUpdate?: (tickable: Tickable) => void;
+
+    /**
+     * 每次循环完成时的回调函数
+     */
+    onLoop?: (tickable: Tickable) => void;
+
+    /**
+     * 动画暂停时的回调函数
+     */
+    onPause?: (tickable: Tickable) => void;
+
+    /**
+     * 动画完成时的回调函数
+     */
+    onComplete?: (tickable: Tickable) => void;
+
+    /**
+     * 每次渲染时的回调函数
+     */
+    onRender?: (renderable: Renderable) => void;
+}>;
 
 export interface Timer extends Clock {
     // 实例属性
