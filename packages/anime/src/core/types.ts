@@ -2,14 +2,15 @@ import { Simplify, Merge, Exact, SetOptional, ValueOf } from "type-fest"
 import { Clock } from "./clock/type"
 import { compositionTypes } from "./consts"
 
+export type JSAnimation = any
 export type Timeline = any
 export type ScrollObserver = any
-export type Renderable = any
+export type Renderable = JSAnimation | Timeline
 export type PercentageKeyframes = any
 export type DurationKeyframes = any
 export type EasingParam = any
 export type FunctionValue = any
-export type Tickable = any
+export type Tickable = Simplify<Timer | Renderable>
 
 export type DefaultsParams = Simplify<{
     /**

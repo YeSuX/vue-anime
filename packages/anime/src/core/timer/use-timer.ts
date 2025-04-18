@@ -111,7 +111,13 @@ export const useTimer = (
             // TODO: 处理反转状态
             // TODO: 设置迭代时间
             // 强制渲染
-            tick(this, 0, 1, internalRender, tickModes.FORCE)
+            tick({
+                tickable: this,
+                time: 0,
+                muteCallbacks: 1,
+                internalRender,
+                tickMode: tickModes.FORCE
+            })
             // 重置属性
             resetTimerProperties(this)
             if (this._hasChildren) {
