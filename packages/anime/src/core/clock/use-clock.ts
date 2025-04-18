@@ -16,7 +16,7 @@ export function useClock(initTime = 0) {
         // 上一帧的时间戳，用于计算deltaTime
         _lastTime: initTime,
         // 当前帧的计划时间，用于帧率控制和时间调度
-        _scheduleTime: 0,
+        _scheduledTime: 0,
         // 每一帧的固定时间间隔，用于计算deltaTime
         _frameDuration: round(K / maxFps, 0),
         // 每秒帧数，控制动画或模拟的更新频率
@@ -39,7 +39,7 @@ export function useClock(initTime = 0) {
             const frameDuration = round(K / fps, 0)
             this._fps = fps
             this._frameDuration = frameDuration
-            this._scheduleTime += frameDuration - previousFrameDuration
+            this._scheduledTime += frameDuration - previousFrameDuration
         },
         get speed() {
             return this._speed
@@ -53,7 +53,7 @@ export function useClock(initTime = 0) {
             // 帧速率稳定：保证动画按设定的FPS运行
             // 跳帧处理：当程序运行缓慢时，会跳过一些帧而不是积压
             // 时间同步：调整内部时钟，使动画速度与实际时间同步
-            const scheduledTime = this._scheduleTime// 预计的下一帧时间
+            const scheduledTime = this._scheduledTime// 预计的下一帧时间
             this._elapsedTime = time // 更新经过的时间
 
             // 如果实际时间还没到预定时间，跳过这一帧
@@ -65,7 +65,7 @@ export function useClock(initTime = 0) {
             const frameDelta = this._elapsedTime - scheduledTime// 实际过去的时间与预计时间的差值
             // 更新下一帧的预定时间
             // 确保至少前进一个帧的时长，如果实际过去的时间更多则跳得更远
-            this._scheduleTime += frameDelta < frameDuration ? frameDuration : frameDelta
+            this._scheduledTime += frameDelta < frameDuration ? frameDuration : frameDelta
             return tickModes.AUTO// 表示应该进行帧更新
         },
         // 用于计算两帧之间的时间差
