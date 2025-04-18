@@ -1,3 +1,5 @@
+import { maxValue, minValue } from "./consts";
+
 // Functions 
 export const noop = () => {};
 
@@ -14,6 +16,8 @@ export const isUnd = (a: unknown) => typeof a === 'undefined'
 
 
 // Math
+
+export const clampInfinity = (v: number) => v === Infinity ? maxValue : v === -Infinity ? -minValue : v
 
 export const _round = Math.round
 const powCache: Record<number, number> = {}

@@ -1,27 +1,11 @@
 import { Callback, Timeline, TimerParams } from "../types"
 import { useClock } from "../clock/use-clock"
-import { isFnc, isUnd } from "../utils"
+import { clampInfinity, isFnc, isUnd } from "../utils"
 import { globals } from "../global"
-import { computed, reactive, Ref, ref } from "vue"
+import { reactive } from "vue"
 import { setValue } from "../value"
-import { tickModes } from "../consts"
-
-export interface Timer {
-    _delay: number
-    _fps: number
-    _speed: number
-    _iterationTime: number
-    fps: number | undefined
-    speed: number
-    iterationDuration: number
-    paused: boolean
-    began: boolean
-    completed: boolean
-    onUpdate: any
-    init(internalRender?: number): Timer
-    resetTime(): void,
-    reset(internalRender?: number): Timer
-}
+import { minValue, tickModes } from "../consts"
+import { tick } from "../render"
 
 export const useTimer = (
     parameters: TimerParams = {},
@@ -51,30 +35,45 @@ export const useTimer = (
     const timerDefaults = parent ? parent.defaults : globals.defaults
     const timerDelay = (isFnc(delay) || isUnd(delay)) ? timerDefaults.delay : +delay
     const timerDuration = isFnc(duration) || isUnd(duration) ? Infinity : +duration;
+    const timerLoopDelay = setValue(loopDelay, timerDefaults.loopDelay)
+    const timerIterationCount = ((loop: boolean | number): number => {
+        if (loop === true || loop === Infinity) {
+            return Infinity;
+        }
 
-    const resetTimerProperties = (timer: Timer) => {
+        if (typeof loop === 'number' && loop < 0) {
+            return Infinity;
+        }
+
+        return (loop === false ? 0 : loop) + 1;
+    })(loop!)
+
+    const resetTimerProperties = (timer: any) => {
         timer.paused = true;
         timer.began = false;
         timer.completed = false;
         return timer;
     }
 
-    const timer = reactive<Timer>({
+    const timer = reactive({
         _delay: timerDelay,
         _fps: setValue(frameRate, timerDefaults.frameRate)!,
         _speed: setValue(playbackRate, timerDefaults.playbackRate)!,
         _iterationTime: 0,
-        fps: undefined,
+        _autoplay: parent ? false : setValue(autoplay, timerDefaults.autoplay)!,
+        fps: setValue(frameRate, timerDefaults.frameRate)!,
         iterationDuration: timerDuration,
         paused: true,
         began: false,
         completed: false,
+        // total duration of the timer
+        duration: clampInfinity(((timerDuration + timerLoopDelay!) * timerIterationCount) - timerLoopDelay!) || minValue,
         onUpdate: onUpdate || timerDefaults.onUpdate,
         get speed() {
-            return clock.speed.value
+            return clock.speed
         },
         set speed(playbackRate) {
-            clock.speed.value = playbackRate
+            clock.speed = playbackRate
             this.resetTime()
         },
         // Functions
@@ -83,12 +82,16 @@ export const useTimer = (
             this.speed = this._speed
             // TODO: 处理Timeline子项的初始渲染
             // 重置计时器状态
-            this.reset(internalRender)
+            // this.reset(internalRender)
             // TODO: 处理自动播放设置
+            const autoplay = this._autoplay
+            if (autoplay) {
+                this.resume()
+            }
             return this
         },
         resetTime() { },
-        reset(internalRender) {
+        reset(internalRender: number) {
             // 步骤1: 恢复被取消的计时器
             // reviveTimer(this);
 
@@ -99,7 +102,7 @@ export const useTimer = (
             this._iterationTime = this.iterationDuration;
 
             // 步骤4: 强制渲染到起始位置
-            // tick(this, 0, 1, internalRender, tickModes.FORCE);
+            tick(this, 0, 1, internalRender, tickModes.FORCE);
 
             // 步骤5: 重置计时器属性
             resetTimerProperties(this);
@@ -109,6 +112,15 @@ export const useTimer = (
             //     forEachChildren(this, resetTimerProperties);
             // }
             return this
+        },
+        resume() {
+            if (!this.paused) {
+                return this;
+            }
+            this.paused = false;
+            if (this.duration <= minValue) {
+                tick(this, minValue, 0, 0, tickModes.FORCE)
+            }
         }
     })
 
