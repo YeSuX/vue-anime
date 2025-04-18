@@ -14,7 +14,7 @@ describe('useClock', () => {
       expect(clock._elapsedTime).toBe(0)
       expect(clock._startTime).toBe(0)
       expect(clock._lastTime).toBe(0)
-      expect(clock._scheduleTime).toBe(0)
+      expect(clock._scheduledTime).toBe(0)
       expect(clock._hasChildren).toBe(false)
       expect(clock._head).toBeNull()
       expect(clock._tail).toBeNull()

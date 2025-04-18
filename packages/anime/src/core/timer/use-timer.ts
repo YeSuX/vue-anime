@@ -1,4 +1,4 @@
-import { Callback, Timeline, TimerParams } from "../types"
+import { Timeline, Timer, TimerParams } from "../types"
 import { useClock } from "../clock/use-clock"
 import { clampInfinity, isFnc, isUnd } from "../utils"
 import { globals } from "../global"
@@ -7,9 +7,17 @@ import { setValue } from "../value"
 import { minValue, tickModes } from "../consts"
 import { tick } from "../render"
 
+export const resetTimerProperties = (timer: Timer) => {
+    timer.paused = true
+    timer.began = false
+    timer.completed = false
+
+    return timer
+}
+
 export const useTimer = (
     parameters: TimerParams = {},
-    parent: Timeline | null = null,
+    parent: Timeline = null,
     parentPosition = 0,
 ) => {
     const clock = useClock(0)
@@ -48,79 +56,125 @@ export const useTimer = (
         return (loop === false ? 0 : loop) + 1;
     })(loop!)
 
-    const resetTimerProperties = (timer: any) => {
-        timer.paused = true;
-        timer.began = false;
-        timer.completed = false;
-        return timer;
-    }
-
-    const timer = reactive({
-        _delay: timerDelay,
-        _fps: setValue(frameRate, timerDefaults.frameRate)!,
-        _speed: setValue(playbackRate, timerDefaults.playbackRate)!,
-        _iterationTime: 0,
-        _autoplay: parent ? false : setValue(autoplay, timerDefaults.autoplay)!,
-        fps: setValue(frameRate, timerDefaults.frameRate)!,
-        iterationDuration: timerDuration,
-        paused: true,
+    const timer = reactive<Timer>({
+        ...clock,
+        id: "",
+        parent: undefined,
+        duration: 0,
+        backwards: false,
+        paused: false,
         began: false,
         completed: false,
-        // total duration of the timer
-        duration: clampInfinity(((timerDuration + timerLoopDelay!) * timerIterationCount) - timerLoopDelay!) || minValue,
-        onUpdate: onUpdate || timerDefaults.onUpdate,
+        onBegin: function (timer: Timer): void {
+            throw new Error("Function not implemented.")
+        },
+        onBeforeUpdate: function (timer: Timer): void {
+            throw new Error("Function not implemented.")
+        },
+        onUpdate: function (timer: Timer): void {
+            throw new Error("Function not implemented.")
+        },
+        onLoop: function (timer: Timer): void {
+            throw new Error("Function not implemented.")
+        },
+        onPause: function (timer: Timer): void {
+            throw new Error("Function not implemented.")
+        },
+        onComplete: function (timer: Timer): void {
+            throw new Error("Function not implemented.")
+        },
+        iterationDuration: 0,
+        iterationCount: 0,
+        _autoplay: undefined,
+        _offset: 0,
+        _delay: 0,
+        _loopDelay: 0,
+        _iterationTime: 0,
+        _currentIteration: 0,
+        _resolve: (() => { }) as Function,
+        _running: false,
+        _reversed: 0,
+        _reverse: 0,
+        _cancelled: 0,
+        _alternate: false,
+        _prev: undefined,
+        _next: undefined,
+        cancelled: false,
+        currentTime: 0,
+        iterationCurrentTime: 0,
+        progress: 0,
+        iterationProgress: 0,
+        currentIteration: 0,
+        reversed: false,
+        reset: function (internalRender: number): Timer {
+            // TODO: 恢复计时器
+            // TODO: 处理反转状态
+            // TODO: 设置迭代时间
+            // 强制渲染
+            tick(this, 0, 1, internalRender, tickModes.FORCE)
+            // 重置属性
+            resetTimerProperties(this)
+            if (this._hasChildren) {
+                // TODO: 每个子动画重置属性
+            }
+            return this
+        },
+        init: function (internalRender = 0): Timer {
+            this.fps = this._fps
+            this.speed = this._speed
+            // TODO: 子元素渲染处理
+            // 重置计时器
+            this.reset(internalRender)
+            console.log('this', this);
+            return this;
+        },
+        resetTime: function (): Timer {
+            return this
+        },
+        pause: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        resume: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        restart: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        seek: function (time: number, muteCallbacks?: boolean | number, internalRender?: boolean | number): Timer {
+            throw new Error("Function not implemented.")
+        },
+        alternate: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        play: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        reverse: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        cancel: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        stretch: function (newDuration: number): Timer {
+            throw new Error("Function not implemented.")
+        },
+        revert: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        complete: function (): Timer {
+            throw new Error("Function not implemented.")
+        },
+        then: function (callback?: (timer: Timer) => void): Promise<any> {
+            throw new Error("Function not implemented.")
+        },
+        _fps: setValue(frameRate, timerDefaults.frameRate),
+        _speed: setValue(playbackRate, timerDefaults.playbackRate),
         get speed() {
             return clock.speed
         },
-        set speed(playbackRate) {
+        set speed(playbackRate: number) {
             clock.speed = playbackRate
             this.resetTime()
-        },
-        // Functions
-        init(internalRender = 0) {
-            this.fps = this._fps
-            this.speed = this._speed
-            // TODO: 处理Timeline子项的初始渲染
-            // 重置计时器状态
-            // this.reset(internalRender)
-            // TODO: 处理自动播放设置
-            const autoplay = this._autoplay
-            if (autoplay) {
-                this.resume()
-            }
-            return this
-        },
-        resetTime() { },
-        reset(internalRender: number) {
-            // 步骤1: 恢复被取消的计时器
-            // reviveTimer(this);
-
-            // 步骤2: 处理方向控制
-            // if (this._reversed && !this._reverse) this.reversed = false;
-
-            // 步骤3: 设置迭代时间
-            this._iterationTime = this.iterationDuration;
-
-            // 步骤4: 强制渲染到起始位置
-            tick(this, 0, 1, internalRender, tickModes.FORCE);
-
-            // 步骤5: 重置计时器属性
-            resetTimerProperties(this);
-
-            // 步骤6: 重置子项属性
-            // if (this._hasChildren) {
-            //     forEachChildren(this, resetTimerProperties);
-            // }
-            return this
-        },
-        resume() {
-            if (!this.paused) {
-                return this;
-            }
-            this.paused = false;
-            if (this.duration <= minValue) {
-                tick(this, minValue, 0, 0, tickModes.FORCE)
-            }
         }
     })
 
