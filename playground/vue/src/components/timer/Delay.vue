@@ -9,7 +9,9 @@ import { useCreateTimer } from 'vue-anime'
 
 const timer = useCreateTimer({
     delay: 2000,
-    onUpdate: (self) => {
+    onBegin: (self) => {
+        console.log('----onBegin----');
+        
         console.log(self);
     }
 })

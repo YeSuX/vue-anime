@@ -8,7 +8,7 @@ export function useClock(initTime = 0) {
         // 当前帧与上一帧之间的时间差，用于动画和物理计算中的时间步长
         deltaTime: 0,
         // 当前时间戳，记录当前播放位置或模拟时间
-        _currentTime: initTime,
+        _absoluteCurrentTime: initTime,
         // 从开始到现在已经过去的总时间，用于计算动画进度或总运行时间
         _elapsedTime: initTime,
         // 初始化或重置时的时间戳，用作时间计算的基准点

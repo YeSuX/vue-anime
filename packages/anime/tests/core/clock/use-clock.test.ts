@@ -10,7 +10,7 @@ describe('useClock', () => {
       const clock = useClock()
 
       expect(clock.deltaTime).toBe(0)
-      expect(clock._currentTime).toBe(0)
+      expect(clock._absoluteCurrentTime).toBe(0)
       expect(clock._elapsedTime).toBe(0)
       expect(clock._startTime).toBe(0)
       expect(clock._lastTime).toBe(0)
@@ -24,7 +24,7 @@ describe('useClock', () => {
       const initialTime = 1000
       const clock = useClock(initialTime)
 
-      expect(clock._currentTime).toBe(initialTime)
+      expect(clock._absoluteCurrentTime).toBe(initialTime)
       expect(clock._elapsedTime).toBe(initialTime)
       expect(clock._startTime).toBe(initialTime)
       expect(clock._lastTime).toBe(initialTime)

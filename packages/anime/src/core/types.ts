@@ -10,7 +10,7 @@ export type PercentageKeyframes = any
 export type DurationKeyframes = any
 export type EasingParam = any
 export type FunctionValue = any
-export type Tickable = Simplify<Timer | Renderable>
+export type Tickable = Timer
 
 export type DefaultsParams = Simplify<{
     /**

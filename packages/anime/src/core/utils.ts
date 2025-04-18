@@ -1,7 +1,7 @@
 import { maxValue, minValue } from "./consts";
 
 // Functions 
-export const noop = () => {};
+export const noop = () => { };
 
 // Enums 
 export const compositionTypes = {
@@ -35,3 +35,5 @@ export function round(v: number, decimalLength: number): number {
     }
     return _round(v * p) / p
 }
+
+export const clamp = (v: number, min: number, max: number) => v < min ? min : v > max ? max : v;

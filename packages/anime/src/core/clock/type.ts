@@ -4,7 +4,7 @@ import { Merge, Simplify, ValueOf } from "type-fest";
 export type ClockProperties = Simplify<{
     // 数值属性
     deltaTime: number;  // 当前帧与上一帧之间的时间差
-    _currentTime: number;  // 当前时间
+    _absoluteCurrentTime: number;  // 当前时间
     _elapsedTime: number;  // 从开始运行到现在经过的总时间
     _startTime: number;  // 开始时间
     _lastTime: number;  // 上一帧的时间
