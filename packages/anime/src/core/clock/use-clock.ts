@@ -1,9 +1,10 @@
 import { computed, reactive, toRefs } from 'vue'
 import { K, maxFps, minValue, tickModes } from '../consts'
 import { round } from '../utils'
+import { Clock } from './type'
 
 export function useClock(initTime = 0) {
-    const clock = reactive({
+    const clock = reactive<Clock>({
         // 当前帧与上一帧之间的时间差，用于动画和物理计算中的时间步长
         deltaTime: 0,
         // 当前时间戳，记录当前播放位置或模拟时间
